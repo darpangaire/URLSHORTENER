@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+
+</head>
+<body class="bg-gray-50">
+    {% block navbar %}
+        {% include 'includes/navbar.html' %}
+    {% endblock %}
+    <!-- Alerts -->
+  <div class="relative">
+    {% include 'includes/alerts.html' %}
+  </div>
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>
+

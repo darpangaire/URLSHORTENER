@@ -1,0 +1,46 @@
+{% if messages %}
+  <div class="fixed top-4 left-1/2 z-40 -translate-x-1/2 flex flex-col gap-4 max-w-full w-[95vw] sm:w-auto items-center">
+    {% for message in messages %}
+      <div
+        x-data="{ show: true }"
+        x-init="timeout = setTimeout(() => show = false, 5000)"
+        x-show="show"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-95"
+        class="flex items-start gap-3 px-5 py-4 rounded-2xl shadow-lg ring-1 ring-gray-200 bg-white/90 backdrop-blur-sm border-l-4
+          {% if 'success' in message.tags %} border-green-500 {% elif 'error' in message.tags %} border-red-500 {% elif 'warning' in message.tags %} border-yellow-400 {% else %} border-blue-500 {% endif %} 
+          w-full max-w-sm sm:max-w-md"
+        role="alert"
+      >
+        <div class="pt-0.5">
+          {% if 'success' in message.tags %}
+            <i class="fa fa-check-circle text-green-500 text-xl"></i>
+          {% elif 'error' in message.tags %}
+            <i class="fa fa-times-circle text-red-500 text-xl"></i>
+          {% elif 'warning' in message.tags %}
+            <i class="fa fa-exclamation-triangle text-yellow-400 text-xl"></i>
+          {% else %}
+            <i class="fa fa-info-circle text-blue-500 text-xl"></i>
+          {% endif %}
+        </div>
+        <div class="flex-1 min-w-0 text-gray-900">
+          {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <span class="font-semibold pr-1">Important:</span>
+          {% endif %}
+          <span class="break-words">{{ message }}</span>
+        </div>
+        <button
+          @click="show = false"
+          type="button"
+          class="ml-2 text-gray-400 hover:text-gray-700 transition"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" class="text-lg">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  </div>
+  <!-- Alpine.js required for transitions -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+{% endif %}

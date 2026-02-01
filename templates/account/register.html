@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+  {# navbar intentionally hidden #}
+{% endblock %}
+
+{% block content %}
+
+<section class="py-12 min-h-[84vh] bg-gradient-to-br from-indigo-100 via-white to-purple-100 flex items-center justify-center">
+  <div class="w-full max-w-md mx-auto bg-white/90 dark:bg-neutral-900 rounded-3xl shadow-2xl p-6 sm:p-10">
+
+    <header class="mb-8 text-center">
+      <h2 class="text-3xl font-extrabold text-indigo-700 dark:text-indigo-400">Signup</h2>
+      <p class="text-gray-500 dark:text-gray-300 mt-2 text-sm">Create your account — it’s quick and easy!</p>
+    </header>
+    <form action="{% url 'register' %}" method="POST" class="space-y-6">
+      {% csrf_token %}
+
+      <div>
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+        {% if form.first_name.errors %}
+          <p class="text-red-600 text-sm">{{ form.first_name.errors }}</p>
+        {% endif %}
+      </div>
+
+      <div>
+        {{ form.last_name.label_tag }}
+        {{ form.last_name }}
+        {% if form.last_name.errors %}
+          <p class="text-red-600 text-sm">{{ form.last_name.errors }}</p>
+        {% endif %}
+      </div>
+
+      <div>
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {% if form.email.errors %}
+          <p class="text-red-600 text-sm">{{ form.email.errors }}</p>
+        {% endif %}
+      </div>
+
+      <div>
+        {{ form.phone_number.label_tag }}
+        {{ form.phone_number }}
+        {% if form.phone_number.errors %}
+          <p class="text-red-600 text-sm">{{ form.phone_number.errors }}</p>
+        {% endif %}
+      </div>
+
+      <div>
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+          <p class="text-red-600 text-sm">{{ form.password1.errors }}</p>
+        {% endif %}
+      </div>
+
+      <div>
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+          <p class="text-red-600 text-sm">{{ form.password2.errors }}</p>
+        {% endif %}
+      </div>
+
+      {% if form.non_field_errors %}
+        <p class="text-red-600 text-sm">{{ form.non_field_errors }}</p>
+      {% endif %}
+
+      <div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-500 hover:from-purple-500 hover:to-indigo-600 text-white font-semibold text-lg shadow-xl transition-transform duration-150 active:scale-95">
+          Register
+        </button>
+      </div>
+      <p class="text-center mt-6 text-gray-600 dark:text-gray-300">
+    Already have an account?
+    <a href="{% url 'login' %}" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Log in</a>
+  </p>
+    </form>
+  </div>
+  
+</section>
+
+{% endblock %}
