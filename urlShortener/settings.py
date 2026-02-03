@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account',
+    'home',
 ]
 
 MIDDLEWARE = [
@@ -122,7 +123,12 @@ STATIC_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# settings.py
+# Custom User Model
 AUTH_USER_MODEL = 'account.Account'
 
+# URL Shortener specific settings
+SHORT_URL_LENGTH = 6
 
+LOGIN_URL = '/account/login/'
+LOGIN_REDIRECT_URL = '/account/dashboard/'
+LOGOUT_REDIRECT_URL = '/'

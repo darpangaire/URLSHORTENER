@@ -23,6 +23,8 @@ class MyAccountManager(BaseUserManager):
       last_name = last_name,
 
     )
+    user.is_active = True
+    
     user.set_password(password) # Password is hashed
     user.save(using=self._db) # self._db supports multiple databases
     return user

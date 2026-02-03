@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}Create URL - URL Shortener{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="bi bi-plus-circle"></i> Create Short URL</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" id="createUrlForm">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">{{ form.url.label }}</label>
+                        {{ form.url }}
+                        {% if form.url.errors %}
+                            <div class="text-danger small mt-1">{{ form.url.errors.0 }}</div>
+                        {% endif %}
+                        <div class="form-text">Enter the long URL you want to shorten</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">{{ form.custom_key.label }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text">{{ request.scheme }}://{{ request.get_host }}/</span>
+                            {{ form.custom_key }}
+                        </div>
+                        <div id="customKeyFeedback" class="mt-1"></div>
+                        {% if form.custom_key.errors %}
+                            <div class="text-danger small mt-1">{{ form.custom_key.errors.0 }}</div>
+                        {% endif %}
+                        <div class="form-text">{{ form.custom_key.help_text }}</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">{{ form.expires_in_days.label }}</label>
+                        {{ form.expires_in_days }}
+                        {% if form.expires_in_days.errors %}
+                            <div class="text-danger small mt-1">{{ form.expires_in_days.errors.0 }}</div>
+                        {% endif %}
+                        <div class="form-text">{{ form.expires_in_days.help_text }}</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="form-check">
+                            {{ form.generate_qr }}
+                            <label class="form-check-label" for="{{ form.generate_qr.id_for_label }}">
+                                {{ form.generate_qr.label }} 
+                                <span class="badge bg-info">Bonus</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-plus-circle"></i> Create Short URL
+                        </button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Dashboard
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Live custom key availability check
+    const customKeyInput = document.getElementById('id_custom_key');
+    const feedback = document.getElementById('customKeyFeedback');
+    let checkTimeout;
+    
+    if (customKeyInput) {
+        customKeyInput.addEventListener('input', function() {
+            const key = this.value.trim();
+            
+            clearTimeout(checkTimeout);
+            
+            if (key.length === 0) {
+                feedback.innerHTML = '';
+                return;
+            }
+            
+            if (key.length < 3) {
+                feedback.innerHTML = '<small class="text-warning"><i class="bi bi-exclamation-circle"></i> Key must be at least 3 characters</small>';
+                return;
+            }
+            
+            feedback.innerHTML = '<small class="text-muted"><i class="bi bi-hourglass-split"></i> Checking...</small>';
+            
+            checkTimeout = setTimeout(() => {
+                fetch(`/api/check-key/?key=${encodeURIComponent(key)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.available) {
+                            feedback.innerHTML = '<small class="text-success"><i class="bi bi-check-circle"></i> Available!</small>';
+                        } else {
+                            feedback.innerHTML = '<small class="text-danger"><i class="bi bi-x-circle"></i> ' + data.message + '</small>';
+                        }
+                    })
+                    .catch(error => {
+                        feedback.innerHTML = '<small class="text-danger"><i class="bi bi-x-circle"></i> Error checking availability</small>';
+                    });
+            }, 500);
+        });
+    }
+</script>
+{% endblock %}

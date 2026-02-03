@@ -6,80 +6,122 @@
 
 {% block content %}
 
-<section class="py-12 min-h-[84vh] bg-gradient-to-br from-indigo-100 via-white to-purple-100 flex items-center justify-center">
-  <div class="w-full max-w-md mx-auto bg-white/90 dark:bg-neutral-900 rounded-3xl shadow-2xl p-6 sm:p-10">
+<section class="py-5 min-vh-100 d-flex align-items-center justify-content-center"
+         style="background: linear-gradient(135deg, #e0e7ff, #ffffff, #f3e8ff);">
 
-    <header class="mb-8 text-center">
-      <h2 class="text-3xl font-extrabold text-indigo-700 dark:text-indigo-400">Signup</h2>
-      <p class="text-gray-500 dark:text-gray-300 mt-2 text-sm">Create your account — it’s quick and easy!</p>
-    </header>
-    <form action="{% url 'register' %}" method="POST" class="space-y-6">
-      {% csrf_token %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-5">
 
-      <div>
-        {{ form.first_name.label_tag }}
-        {{ form.first_name }}
-        {% if form.first_name.errors %}
-          <p class="text-red-600 text-sm">{{ form.first_name.errors }}</p>
-        {% endif %}
+        <div class="card shadow-lg border-0 rounded-4 p-4 p-sm-5 bg-white">
+
+          <!-- Header -->
+          <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary">Signup</h2>
+            <p class="text-muted small">
+              Create your account — it’s quick and easy!
+            </p>
+          </div>
+
+          <!-- Form -->
+          <form action="{% url 'register' %}" method="POST" novalidate>
+            {% csrf_token %}
+
+            <!-- First Name -->
+            <div class="mb-3">
+              {{ form.first_name.label_tag }}
+              {{ form.first_name }}
+              {% if form.first_name.errors %}
+                <div class="invalid-feedback d-block">
+                  {{ form.first_name.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Last Name -->
+            <div class="mb-3">
+              {{ form.last_name.label_tag }}
+              {{ form.last_name }}
+              {% if form.last_name.errors %}
+                <div class="invalid-feedback d-block">
+                  {{ form.last_name.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              {{ form.email.label_tag }}
+              {{ form.email }}
+              {% if form.email.errors %}
+                <div class="invalid-feedback d-block">
+                  {{ form.email.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Phone -->
+            <div class="mb-3">
+              {{ form.phone_number.label_tag }}
+              {{ form.phone_number }}
+              {% if form.phone_number.errors %}
+                <div class="invalid-feedback d-block">
+                  {{ form.phone_number.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              {{ form.password1.label_tag }}
+              {{ form.password1 }}
+              {% if form.password1.errors %}
+                <div class="invalid-feedback d-block">
+                  {{ form.password1.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+              {{ form.password2.label_tag }}
+              {{ form.password2 }}
+              {% if form.password2.errors %}
+                <div class="invalid-feedback d-block">
+                  {{ form.password2.errors|striptags }}
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Non-field Errors -->
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger small">
+                {{ form.non_field_errors|striptags }}
+              </div>
+            {% endif %}
+
+            <!-- Submit Button -->
+            <div class="d-grid mt-4">
+              <button type="submit"
+                      class="btn btn-primary btn-lg rounded-pill shadow-sm">
+                Register
+              </button>
+            </div>
+
+            <!-- Login Link -->
+            <p class="text-center text-muted mt-4 mb-0">
+              Already have an account?
+              <a href="{% url 'login' %}" class="fw-semibold text-decoration-none">
+                Log in
+              </a>
+            </p>
+
+          </form>
+        </div>
+
       </div>
-
-      <div>
-        {{ form.last_name.label_tag }}
-        {{ form.last_name }}
-        {% if form.last_name.errors %}
-          <p class="text-red-600 text-sm">{{ form.last_name.errors }}</p>
-        {% endif %}
-      </div>
-
-      <div>
-        {{ form.email.label_tag }}
-        {{ form.email }}
-        {% if form.email.errors %}
-          <p class="text-red-600 text-sm">{{ form.email.errors }}</p>
-        {% endif %}
-      </div>
-
-      <div>
-        {{ form.phone_number.label_tag }}
-        {{ form.phone_number }}
-        {% if form.phone_number.errors %}
-          <p class="text-red-600 text-sm">{{ form.phone_number.errors }}</p>
-        {% endif %}
-      </div>
-
-      <div>
-        {{ form.password1.label_tag }}
-        {{ form.password1 }}
-        {% if form.password1.errors %}
-          <p class="text-red-600 text-sm">{{ form.password1.errors }}</p>
-        {% endif %}
-      </div>
-
-      <div>
-        {{ form.password2.label_tag }}
-        {{ form.password2 }}
-        {% if form.password2.errors %}
-          <p class="text-red-600 text-sm">{{ form.password2.errors }}</p>
-        {% endif %}
-      </div>
-
-      {% if form.non_field_errors %}
-        <p class="text-red-600 text-sm">{{ form.non_field_errors }}</p>
-      {% endif %}
-
-      <div>
-        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-500 hover:from-purple-500 hover:to-indigo-600 text-white font-semibold text-lg shadow-xl transition-transform duration-150 active:scale-95">
-          Register
-        </button>
-      </div>
-      <p class="text-center mt-6 text-gray-600 dark:text-gray-300">
-    Already have an account?
-    <a href="{% url 'login' %}" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline">Log in</a>
-  </p>
-    </form>
+    </div>
   </div>
-  
 </section>
 
 {% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete URL - URL Shortener{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="bi bi-trash"></i> Delete URL</h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle"></i> 
+                    <strong>Warning!</strong> This action cannot be undone.
+                </div>
+                
+                <p class="mb-3">Are you sure you want to delete this URL?</p>
+                
+                <div class="p-3 bg-light rounded mb-4">
+                    <p class="mb-2"><strong>Short URL:</strong></p>
+                    <code>{{ request.scheme }}://{{ request.get_host }}/{{ url.short_key }}</code>
+                    
+                    <p class="mb-2 mt-3"><strong>Original URL:</strong></p>
+                    <div style="word-break: break-all;">{{ url.original_url }}</div>
+                    
+                    <p class="mb-2 mt-3"><strong>Statistics:</strong></p>
+                    <ul class="mb-0">
+                        <li>Clicks: {{ url.click_count }}</li>
+                        <li>Created: {{ url.created_at|date:"F d, Y" }}</li>
+                    </ul>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            <i class="bi bi-trash"></i> Yes, Delete This URL
+                        </button>
+                        <a href="{% url 'url_detail' url.pk %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

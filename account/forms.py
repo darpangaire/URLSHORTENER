@@ -1,6 +1,9 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
+
+
+
 
 User = get_user_model() # Returns the active user model defined in AUTH_USER_MODEL (settings.py)
 
@@ -12,7 +15,7 @@ class RegistrationForm(UserCreationForm):
     first_name = forms.CharField(
         max_length=30,
         widget=forms.TextInput(attrs={
-            "class": "w-full px-4 py-3 border border-gray-300 dark:border-neutral-700 rounded-xl bg-gray-50 dark:bg-neutral-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition",
+            "class": "form-control",
             "placeholder": "Enter First Name",
         }) # A widget controls how a form field is rendered in HTML.
           # Field → handles data + validation
@@ -22,35 +25,38 @@ class RegistrationForm(UserCreationForm):
     last_name = forms.CharField(
         max_length=30,
         widget=forms.TextInput(attrs={
-            "class": "w-full px-4 py-3 border border-gray-300 dark:border-neutral-700 rounded-xl bg-gray-50 dark:bg-neutral-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition",
+            "class": "form-control",
             "placeholder": "Enter Last Name",
         })
     )
     email = forms.EmailField(
+        required=True,
         widget=forms.EmailInput(attrs={
-            "class": "w-full px-4 py-3 border border-gray-300 dark:border-neutral-700 rounded-xl bg-gray-50 dark:bg-neutral-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition",
-            "placeholder": "Enter Email Address",
+            'class': 'form-control',
+            'placeholder': 'Email address'
         })
     )
+    
     phone_number = forms.CharField(
         max_length=15,
         widget=forms.TextInput(attrs={
-            "class": "w-full px-4 py-3 border border-gray-300 dark:border-neutral-700 rounded-xl bg-gray-50 dark:bg-neutral-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition",
+            "class": "form-control",
             "placeholder": "Enter Phone Number",
         })
     )
+    
+    
     password1 = forms.CharField(
-        label="Password",
         widget=forms.PasswordInput(attrs={
-            "class": "w-full px-4 py-3 border border-gray-300 dark:border-neutral-700 rounded-xl bg-gray-50 dark:bg-neutral-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition",
-            "placeholder": "Enter Password",
+            'class': 'form-control',
+            'placeholder': 'Password'
         })
     )
+    
     password2 = forms.CharField(
-        label="Confirm Password",
         widget=forms.PasswordInput(attrs={
-            "class": "w-full px-4 py-3 border border-gray-300 dark:border-neutral-700 rounded-xl bg-gray-50 dark:bg-neutral-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition",
-            "placeholder": "Confirm Password",
+            'class': 'form-control',
+            'placeholder': 'Confirm Password'
         })
     )
     # Why not write HTML directly in templates?
@@ -60,3 +66,22 @@ class RegistrationForm(UserCreationForm):
         model = User  # replace with your user model
         fields = ("first_name", "last_name", "email", "phone_number", "password1", "password2")
 
+
+class LoginForm(AuthenticationForm):
+    """
+    User login form
+    """
+    email = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Email'
+        })
+    )
+    
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Password'
+        })
+    )
+    
