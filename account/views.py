@@ -30,28 +30,22 @@ def register_view(request):
 
 
 def login_view(request):
-    """
-    User login view
-    """
     if request.user.is_authenticated:
         return redirect('dashboard')
-    
+
     if request.method == 'POST':
-        form = LoginForm(data=request.POST)
+        form = LoginForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f'Welcome back, {user.username}!')
-                next_url = request.GET.get('next', 'dashboard')
-                return redirect(next_url)
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f'Welcome back, {user.first_name}!')
+            return redirect(request.POST.get('next') or 'dashboard')
+        else:
+            messages.error(request, 'Invalid email or password.')
     else:
         form = LoginForm()
-    
-    return render(request, 'account/login.html', {'form': form})
 
+    return render(request, 'account/login.html', {'form': form})
 
 def logout_view(request):
     """

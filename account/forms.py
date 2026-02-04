@@ -68,16 +68,14 @@ class RegistrationForm(UserCreationForm):
 
 
 class LoginForm(AuthenticationForm):
-    """
-    User login form
-    """
-    email = forms.CharField(
-        widget=forms.TextInput(attrs={
+    username = forms.EmailField(
+        label='Email',
+        widget=forms.EmailInput(attrs={
             'class': 'form-control',
             'placeholder': 'Email'
         })
     )
-    
+
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
