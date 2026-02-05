@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 # Create your models here.
 
@@ -49,7 +49,7 @@ class MyAccountManager(BaseUserManager):
   
 # why AbstractBaseUser?
 # It provides core authentication features includes password field,last_login,set_password() (hashes passwords),check_password(). It gives full control over fields. Allows email-based authentication instead of username-based. Best practice for production apps.
-class Account(AbstractBaseUser):
+class Account(AbstractBaseUser,PermissionsMixin):
   first_name = models.CharField(max_length=50)
   last_name = models.CharField(max_length=50)
   username = models.CharField(max_length=50, unique=True)
@@ -61,7 +61,7 @@ class Account(AbstractBaseUser):
   last_login = models.DateTimeField(auto_now_add=True)
   is_admin = models.BooleanField(default=False)
   is_staff = models.BooleanField(default=False)
-  is_active = models.BooleanField(default=False)
+  is_active = models.BooleanField(default=True)
   is_superadmin = models.BooleanField(default=False)
 
   objects = MyAccountManager() 
@@ -78,6 +78,8 @@ class Account(AbstractBaseUser):
   
   def has_module_perms(self,add_label):
     return True
+  
+
  
 
  
